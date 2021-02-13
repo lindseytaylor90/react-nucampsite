@@ -52,7 +52,7 @@ class Main extends Component {
         <Header/>
         <Switch>
             <Route path='/home' component={HomePage} />
-            <Route exact path='/directory' render={() => <Directory campsites={this.state.campsites} />} />
+            <Route exact path='/directory' render={() => <Directory campsites={this.props.campsites} />} />
 
             <Route path='/directory/:campsiteId' component={CampsiteWithId} />
             <Route exact path='/aboutus' component={AboutPage} />
