@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label,Col,Row  } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+
  
 function RenderCampSite({campsite}){
     return (
@@ -16,7 +17,7 @@ function RenderCampSite({campsite}){
     );
 }
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, campsiteId }) {
     if(comments){
         return (
             <div className="col-md-5 m-1">
@@ -40,7 +41,7 @@ function RenderComments({comments}) {
 
                     );
                 })}
-            <CommentForm/>
+            <CommentForm  campsiteId={campsiteId} addComment={addComment}/>
             </div>
         );
     }
@@ -63,7 +64,11 @@ function RenderComments({comments}) {
             </div>
                     <div className="row">
                         <RenderCampSite campsite={props.campsite} />
-                        <RenderComments comments={props.comments} />
+                        <RenderComments 
+                        comments={props.comments} 
+                        addComment={props.addComment}
+                        campsiteId={props.campsite.id}
+                        />
                     </div>
                 </div>
             );
@@ -87,8 +92,10 @@ function RenderComments({comments}) {
         }
             
         handleSubmit(values){
-            console.log('Current state is: ' + JSON.stringify(values));
-            alert('Current state is: ' + JSON.stringify(values));
+            this.toggleModal();
+            this.props.addComment(this.props.campsiteId, values.rating, values.author, values.text);
+            //console.log('Current state is: ' + JSON.stringify(values));
+            //alert('Current state is: ' + JSON.stringify(values));
         }
 
         toggleModal() {
