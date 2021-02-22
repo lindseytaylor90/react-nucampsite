@@ -110,11 +110,7 @@ export const fetchPromotions = () => dispatch => {
         .catch(error => dispatch(promotionsFailed(error.message)));
 };
 
-export const fetchPartners = () => dispatch => {
-    return fetch(baseUrl + 'partners')
-        .then(response => response.json())
-        .then(partners => dispatch(addPartners(partners)));
-};
+
 
 export const campsitesLoading = () => ({
     type: ActionTypes.CAMPSITES_LOADING
@@ -124,10 +120,6 @@ export const promotionsLoading = () => ({
     type: ActionTypes.PROMOTIONS_LOADING
 });
 
-export const campsitesFailed = errMess => ({
-    type: ActionTypes.CAMPSITES_FAILED,
-    payload: errMess
-});
 
 export const commentsFailed = errMess => ({
     type: ActionTypes.COMMENTS_FAILED,
@@ -158,3 +150,68 @@ export const addPartners = partners => ({
     type: ActionTypes.ADD_PARTNERS,
     payload: partners
 });
+export const fetchPartners = () => dispatch => {
+    dispatch(partnersLoading());
+
+    return fetch(baseUrl + 'partners')
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            }
+        )
+        .then(response => response.json())
+        .then(partners => dispatch(addPartners(partners)))
+        .catch(error => dispatch(partnersFailed(error.message)));
+};
+
+
+export const partnersLoading = () => ({
+    type: ActionTypes.PARTNERS_LOADING
+});
+
+export const campsitesFailed = errMess => ({
+    type: ActionTypes.CAMPSITES_FAILED,
+    payload: errMess
+});
+
+
+export const partnersFailed = errMess => ({
+    type: ActionTypes.PARTNERS_FAILED,
+    payload: errMess
+});
+export const postFeedback = (feedback) => () => {
+    
+    return fetch(baseUrl + 'feedback', {
+            method: "POST",
+            body: JSON.stringify(feedback),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => { throw error; }
+        )
+        .then(response => response.json())
+        .then(response => alert ('thank you for the feedback' + JSON.stringify(response))) 
+        .catch(error => {
+            console.log('post feedback', error.message);
+            alert('Your feedback could not be posted\nError: ' + error.message);
+        });
+};

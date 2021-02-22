@@ -9,8 +9,28 @@ import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
-import { postComment, fetchCampsites, fetchComments, fetchPromotions } from '../redux/ActionCreators';
+import { postComment, fetchCampsites, fetchComments, fetchPromotions, fetchPartners, postFeedback } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
+
+const mapStateToProps = state => {
+  return {
+      campsites: state.campsites,
+      comments: state.comments,
+      partners: state.partners,
+      promotions: state.promotions
+  };
+};
+
+const mapDispatchToProps = {
+  postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text)),
+  fetchCampsites: () => (fetchCampsites()),
+  fetchComments: () => (fetchComments()),
+  resetFeedbackForm: () => (actions.reset('feedbackForm')),
+  fetchPromotions: () => (fetchPromotions()),
+  fetchPartners: () => (fetchPartners()),
+  postFeedback: feedback => (postFeedback(feedback))
+};
 
 class Main extends Component {
 
@@ -18,11 +38,11 @@ class Main extends Component {
     this.props.fetchCampsites();
     this.props.fetchComments();
     this.props.fetchPromotions();
+    this.props.fetchPartners();
   }
 
   render() {
     const HomePage =() => {
-    console.log('promo = ', this.props.promotions);
     
       return (
         <Home
@@ -32,7 +52,10 @@ class Main extends Component {
           promotion={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
           promotionLoading={this.props.promotions.isLoading}
           promotionErrMess={this.props.promotions.errMess}
-          partner={this.props.partners.filter(partner => partner.featured)[0]}
+          partner={this.props.partners.partners.filter(partner => partner.featured)[0]}
+          partnerLoading={this.props.partners.isLoading}
+          partnerErrMess={this.props.partners.errMess}
+        
         />
       );
     }
@@ -52,10 +75,6 @@ class Main extends Component {
   };  
 
 
-
-
-    const AboutPage =() => <About partners={this.state.partners}/>;
-
     return (
       <div>
         <Header/>
@@ -67,7 +86,7 @@ class Main extends Component {
             {this.props.campsites} />} />
             <Route path='/directory/:campsiteId' component={CampsiteWithId} />
             <Route exact path='/aboutus' render={() => <About partners= {this.props.partners}/>} />
-            <Route exact path='/contactus' render={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+            <Route exact path='/contactus' render={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} />} />
             <Redirect to='/home' />
         </Switch>
         </CSSTransition>
@@ -78,21 +97,5 @@ class Main extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-      campsites: state.campsites,
-      comments: state.comments,
-      partners: state.partners,
-      promotions: state.promotions
-  };
-};
-
-const mapDispatchToProps = {
-  postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text)),
-  fetchCampsites: () => (fetchCampsites()),
-  fetchComments: () => (fetchComments()),
-  resetFeedbackForm: () => (actions.reset('feedbackForm')),
-  fetchPromotions: () => (fetchPromotions())
-};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

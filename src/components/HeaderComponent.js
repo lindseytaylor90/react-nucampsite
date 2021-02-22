@@ -2,7 +2,10 @@ import React, { Component }  from 'react';
 import { Navbar, NavbarBrand, Jumbotron, NavbarToggler, Collapse, Nav, NavItem,
 Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label } from 'reactstrap';
 import {NavLink} from 'react-router-dom';
+import styled, {keyframes} from 'styled-components';
+import {bounce} from 'react-animations';
 
+const Bounce = styled.div`animation: 2s ${keyframes`${bounce}`} infinite`;
 
 class Header extends Component {
 
@@ -43,7 +46,9 @@ class Header extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col">
+                                <Bounce>
                                 <h1>NuCamp</h1>
+                                </Bounce>
                                 <h2>a better way to camp</h2>
                             </div>
                         </div>
