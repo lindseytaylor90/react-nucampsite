@@ -126,7 +126,7 @@ function RenderComments({comments, postComment, campsiteId }) {
             
         handleSubmit(values){
             this.toggleModal();
-            this.props.postComment(this.props.campsiteId, values.rating, values.author, values.text);
+            this.props.postComment(this.props.campsiteId, Number(values.rating), values.author, values.text);
         }
 
         toggleModal() {
