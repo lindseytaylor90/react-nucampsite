@@ -1,8 +1,8 @@
 {
-  "name": "nucampsite",
+  "name": "react-nucampsite",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://lindseytaylor90.github.io/nucampsite",
+  "homepage": "https://lindseytaylor90.github.io/react-nucampsite",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
