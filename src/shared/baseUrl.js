@@ -1,1 +1,1 @@
-export const baseUrl = 'https://my-json-server.typicode.com/lindseytaylor90/react-nucampsite-json-server';
+export const baseUrl = 'https://my-json-server.typicode.com/lindseytaylor90/react-nucampsite-json-server/';
