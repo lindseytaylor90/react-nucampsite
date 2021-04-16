@@ -13,7 +13,7 @@ class App extends Component {
     return (
 
       <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="/react-nucampsite">
         <div className="App">
             <Main />
         </div>
